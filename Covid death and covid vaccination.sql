@@ -129,8 +129,6 @@ New_Vaccination numeric,
 TotalpeopleVaccinated numeric
 )
 
-
-
 INSERT into #PercentPopulationVaccinated
 select Dea.continent,Dea.location,Dea.date,Dea.population ,Vacc.new_vaccinations,
 sum(convert(int,Vacc.new_vaccinations))over(Partition by Dea.location order by Dea.Location,Dea.date)
