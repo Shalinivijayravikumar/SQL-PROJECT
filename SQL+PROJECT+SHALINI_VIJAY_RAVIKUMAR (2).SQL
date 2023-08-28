@@ -1,4 +1,4 @@
-# 1. Write a query to display customer full name with their title (Mr/Ms), both first name and last name are in upper case, customer email id, customer creation date and display customer’s category after applying below categorization rules: i) IF customer creation date Year <2005 Then Category A ii) IF customer creation date Year >=2005 and <2011 Then Category B iii)IF customer creation date Year>= 2011 Then Category C Hint: Use CASE statement, no permanent change in table required. 
+# query to display customer full name with their title (Mr/Ms), both first name and last name are in upper case, customer email id, customer creation date and display customer’s category after applying below categorization rules: i) IF customer creation date Year <2005 Then Category A ii) IF customer creation date Year >=2005 and <2011 Then Category B iii)IF customer creation date Year>= 2011 Then Category C Hint: Use CASE statement, no permanent change in table required. 
 #[NOTE: TABLES to be used - ONLINE_CUSTOMER TABLE]
 USE orders;
 
@@ -11,7 +11,7 @@ SELECT CONCAT(CASE WHEN CUSTOMER_GENDER='M' THEN 'MR' ELSE 'MS' END,' ',UCASE(CU
 FROM ONLINE_CUSTOMER;
 
 
-#2. Write a query to display the following information for the products, which have not been sold: product_id, product_desc, product_quantity_avail, 
+#2. query to display the following information for the products, which have not been sold: product_id, product_desc, product_quantity_avail, 
 #product_price, inventory values (product_quantity_avail*product_price), New_Price after applying discount as per below criteria. Sort the output with respect to
  #decreasing value of Inventory_Value.
  #i) IF Product Price > 200,000 then apply 20% discount ii) IF Product Price > 100,000 then apply 15% discount 
@@ -30,7 +30,7 @@ FROM ORDER_ITEMS P)
 ORDER BY INVENTORY_VALUES DESC;
 
 
-#3. Write a query to display Product_class_code, Product_class_description, 
+#3. query to display Product_class_code, Product_class_description, 
 #Count of Product type in each productclass, Inventory Value (p.product_quantity_avail*p.product_price). Information should be displayed for only those
 # product_class_code which have more than 1,00,000. Inventory Value. Sort the output with respect to decreasing value of Inventory_Value. 
 #[NOTE: TABLES to be used - PRODUCT_CLASS, PRODUCT_CLASS_CODE]
@@ -44,7 +44,7 @@ GROUP BY P.PRODUCT_CLASS_CODE
 ORDER BY INVENTORY_VALUE DESC;
 
 
-#4. Write a query to display customer_id, full name, customer_email, customer_phone and country of customers who have cancelled all the orders placed by them (USE SUB-QUERY)
+#4. query to display customer_id, full name, customer_email, customer_phone and country of customers who have cancelled all the orders placed by them (USE SUB-QUERY)
 #[NOTE: TABLES to be used - ONLINE_CUSTOMER, ADDRESSS, OREDER_HEARDER]
 
 SELECT CUSTOMER_ID, CONCAT(UCASE(CUSTOMER_FNAME),' ',UCASE(CUSTOMER_LNAME)) AS CUSTOMER_FULL_NAME, CUSTOMER_EMAIL, CUSTOMER_PHONE, COUNTRY
@@ -62,7 +62,7 @@ INNER JOIN ORDER_HEADER OH
 ON OH.CUSTOMER_ID = O.CUSTOMER_ID 
 WHERE OH.ORDER_STATUS = 'CANCELLED';
 
-#5. Write a query to display Shipper name, City to which it is catering, num of customer catered by the shipper in the city and 
+#5.query to display Shipper name, City to which it is catering, num of customer catered by the shipper in the city and 
 #number of consignments delivered to that city for Shipper DHL [NOTE: TABLES to be used - SHIPPER,ONLINE_CUSTOMER, ADDRESSS, ORDER_HEARDER]
 
 
@@ -75,7 +75,7 @@ WHERE SHIPPER_NAME = 'DHL'
 GROUP BY A.CITY
 ORDER BY SHIPPER_NAME,CITY DESC;
 
-#6. Write a query to display product_id, product_desc, product_quantity_avail, quantity sold, quantity available and show inventory Status of products as below as 
+#6.  query to display product_id, product_desc, product_quantity_avail, quantity sold, quantity available and show inventory Status of products as below as 
 #per below condition: a.>> For Electronics and Computer categories, if sales till date is Zero then show 'No Sales in past, give discount to reduce inventory', 
 #if inventory quantity is less than 10% of quantity sold,show 'Low inventory, need to add inventory', if inventory quantity is less than 50% of quantity sold, 
 #show 'Medium inventory, need to add some inventory', if inventory quantity is more or equal to 50% of quantity sold, show 'Sufficient inventory' 
@@ -142,7 +142,7 @@ ON OH.ORDER_ID = OI.ORDER_ID AND OH.ORDER_STATUS NOT IN ('CANCELLED')
 WHERE P.PRODUCT_CLASS_CODE NOT IN ('2050','2053','2055','2057')
 GROUP BY PRODUCT_ID) AS REST_CATEGORIES;
 
-#7. Write a query to display order_id and volume of the biggest order (in terms of volume) that can fit in carton id 10 
+#7.  query to display order_id and volume of the biggest order (in terms of volume) that can fit in carton id 10 
 #-- [NOTE: TABLES to be used - CARTON, ORDER_ITEMS, PRODUCT]
 
 SELECT ORDER_ID, TOTAL_VOLUME  FROM 
@@ -158,7 +158,7 @@ ORDER BY TOTAL_VOLUME DESC) ORDER_VOLUME
 WHERE TOTAL_VOLUME < (SELECT (P.LEN * P.WIDTH * P.HEIGHT) FROM CARTON P WHERE CARTON_ID = 10)
 LIMIT 1;
 
-#8. Write a query to display customer id, customer full name, total quantity and total value (quantity*price) shipped where mode of payment is Cash and 
+#8. query to display customer id, customer full name, total quantity and total value (quantity*price) shipped where mode of payment is Cash and 
 #customer last name starts with 'G' --[NOTE: TABLES to be used - ONLINE_CUSTOMER, ORDER_ITEMS, PRODUCT, ORDER_HEADER]
 
 SELECT CUSTOMER_ID, CUSTOMER_FULLNAME, SUM(PRODUCT_QUANTITY) AS TOTAL_QUANTITY, SUM(TOTAL_VALUE) AS TOTAL_VALUE  FROM
@@ -171,7 +171,7 @@ INNER JOIN PRODUCT P ON P.PRODUCT_ID = OI.PRODUCT_ID
 WHERE ORDER_STATUS = 'SHIPPED' AND PAYMENT_MODE = 'CASH' AND OC.CUSTOMER_LNAME LIKE 'G%') ORDERITEMS
 GROUP BY OC.CUSTOMER_ID;	
 
-#9. Write a query to display product_id, product_desc and total quantity of products which are sold together with product id 201 
+#9. query to display product_id, product_desc and total quantity of products which are sold together with product id 201 
 # and are not shipped to city Bangalore and New Delhi. Display the output in descending order with respect to the tot_qty. 
 #-- (USE SUB-QUERY) -- [NOTE: TABLES to be used - order_items, product,order_head, online_customer, address]
 
@@ -189,7 +189,7 @@ GROUP BY P.PRODUCT_ID
 ORDER BY TOTAL_QUANTITY DESC) AS SOLD
 WHERE PRODUCT_ID !='201';
 
-#10. Write a query to display the order_id,customer_id and customer fullname, total quantity of products shipped for order ids which are even 
+#10.  query to display the order_id,customer_id and customer fullname, total quantity of products shipped for order ids which are even 
 #and shipped to address where pincode is not starting with "5" -- [NOTE: TABLES to be used - online_customer,Order_header, order_items,address]
 
 SELECT O.ORDER_ID,OC.CUSTOMER_ID,CONCAT(UCASE(OC.CUSTOMER_FNAME),' ',UCASE(OC.CUSTOMER_LNAME)) AS CUSTOMER_FULLNAME,SUM(PRODUCT_QUANTITY) AS TOTAL_QUANTITY
